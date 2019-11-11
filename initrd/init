@@ -1,0 +1,47 @@
+#!/bin/busybox sh
+
+# Copyright (C) 2019 ealain
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
+ROOT=/dev/sda1
+
+
+/bin/busybox mount -o remount -w %root% /
+
+/bin/busybox mount -t proc proc /proc
+
+# Mount the boot partition on /boot
+/bin/busybox mkdir -p /boot
+/bin/busybox mount -o sync /dev/sda3 /boot
+
+# Create debug/ folder to retrieve messages
+/bin/busybox mkdir -p /boot/debug
+# Log the version and available commands
+/bin/busybox busybox &> /boot/debug/busybox
+
+# Mount the "real" root device
+/bin/busybox mkdir /new_root
+/bin/busybox mount -t ext4 $ROOT /new_root &> /boot/debug/mount_root
+
+/bin/busybox umount /boot
+/bin/busybox umount /dev
+/bin/busybox umount /proc
+
+# Pivot root
+cd /new_root
+/bin/busybox pivot_root . mnt
+
+exec chroot . sh -c 'umount /mnt; exec /sbin/init'

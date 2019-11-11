@@ -1,0 +1,5 @@
+auto
+iface lo inet loopback
+
+auto egiga0
+iface egiga0 inet dhcp
