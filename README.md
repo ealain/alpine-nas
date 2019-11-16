@@ -101,7 +101,7 @@ The filesystem contains many different files and is mounted on `/usr/local/modul
 └── .wdphotos
 ```
 
-#### Partition 5
+### Partition 5
 - ext4
 - boot partition (rescue)
 ```
@@ -112,11 +112,11 @@ The filesystem contains many different files and is mounted on `/usr/local/modul
     └── uRamdisk
 ```
 
-#### Partition 6
+### Partition 6
 - ext4
 - empty
 
-#### Partition 7
+### Partition 7
 - ext4
 - configuration files
 - mounted on `/usr/local/config`
@@ -134,7 +134,7 @@ executes `/etc/rc.sh`,
 is run.
 
 
-## Alpine Linux install
+## Alpine Linux installation
 
 ### Configure the boot partition
 
