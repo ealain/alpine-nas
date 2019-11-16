@@ -10,10 +10,12 @@ by Western Digital.**
 Instructions lead to data loss. Consider backing up data. Think twice before
 running scripts.
 
-## Repository
 
-- **initrd/**: minimal RAMDisk,
-- **root/**: root filesystem based on Alpine Linux's *minirootfs*.
+## Contents
+
+1. [Device overview](/README.md#device-overview)
+2. [Alpine Linux installation](/README.md#alpine-linux-installation)
+
 
 ## Device overview
 
