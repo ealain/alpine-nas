@@ -145,11 +145,6 @@ Instructions in **initrd/README.md**.
 Instructions in **root/README.md**.
 
 
-## Notes
-
-- `umount -a /mnt` in init ? (/dev might prevent unmounting)
-
-
 ## To go further
 
 - lock root account
