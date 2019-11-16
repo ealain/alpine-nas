@@ -147,16 +147,16 @@ Instructions in **initrd/README.md**.
 Instructions in **root/README.md**.
 
 
-## To go further
+## Next steps
 
-- lock root account
-- install ntpd
+- enable ntpd
+- lock the root account
+- configure the partition to save data
 - set up rsync
-- lvm partition (data, luks, swap)
-- compile new kernel and append dtb files
+- compile a more recent kernel and append dtb files
 
 
 ## Caveats
 
-- led is blinking
-- hd is always spinning (prevent the OS from keeping files open on the drive ?)
+- the led blinks (blue)
+- the hard drive does not automatically go to standby mode
