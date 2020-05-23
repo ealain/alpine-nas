@@ -2,6 +2,15 @@
 
 *Device reference: [WDBCTL0030HWT-EESN](https://documents.westerndigital.com/content/dam/doc-library/en_gb/assets/public/wd/product/external-storage/my_cloud/my-cloud/mycloud-product-overview.pdf)*
 
+## Device components
+
+Board reference: `WD_Glacier_DB-88F6720-V2`
+- Marvell Soc [Armada 375 (88F6720)](https://www.marvell.com/documents/xhvwfczzcqkjbmhbmvnb/)
+- Macronix flash memory: [MX25L8006E](https://www.macronix.com/Lists/Datasheet/Attachments/7578/MX25L8006E,%203V,%208Mb,%20v1.2.pdf)
+- Samsung DDR3 SDRAM: 1x 512 MB [K4B4G1646D-BCK0](https://www.samsung.com/semiconductor/global.semi/file/resource/2017/11/DS_K4B4G1646D-BC-I_Rev103-0.pdf)
+- Western Digital hard drive: [WD30EFRX](https://documents.westerndigital.com/content/dam/doc-library/en_us/assets/public/western-digital/product/internal-drives/wd-red-hdd/data-sheet-western-digital-wd-red-hdd-2879-800002.pdf).
+
+
 ## Disclaimer
 
 **I am not responsible for any damage or waranty loss. This is not supported
@@ -11,120 +20,7 @@ Instructions lead to data loss. Consider backing up data. Think twice before
 running scripts.
 
 
-## Contents
-
-1. [Device overview](/README.md#device-overview)
-2. [Alpine Linux installation](/README.md#alpine-linux-installation)
-
-
-## Device overview
-
-Main elements:
-- board with SoC [Marvell ARMADA 375 (88F6720)](https://www.marvell.com/documents/xhvwfczzcqkjbmhbmvnb/),
-- hard drive [WD30EFRX](https://documents.westerndigital.com/content/dam/doc-library/en_us/assets/public/western-digital/product/internal-drives/wd-red-hdd/data-sheet-western-digital-wd-red-hdd-2879-800002.pdf).
-
-Partitions (3 TB):
-```
-Number  Start (sector)    End (sector)  Size       Code  Name
-   1            2048         4196351   2.0 GiB     8200  Linux swap
-   2        16779264      5860533134   2.7 TiB     0700  Microsoft basic data
-   3        14682112        16779263   1024.0 MiB  0700  Microsoft basic data
-   4         4196352         6293503   1024.0 MiB  0700  Microsoft basic data
-   5         6293504         8390655   1024.0 MiB  0700  Microsoft basic data
-   6         8390656        12584959   2.0 GiB     0700  Microsoft basic data
-   7        12584960        14682111   1024.0 MiB  0700  Microsoft basic data
-```
-
-### Partition 1
-- swap space
-
-### Partition 2
-- ext4
-- users' files
-
-### Partition 3
-- ext4
-- boot partition
-```
-└── boot
-    ├── image.cfs
-    ├── image.cfs.sep
-    ├── uImage
-    └── uRamdisk
-```
-
-To list the information contained in the header of an U-Boot image:
-```
-mkimage -l uRamdisk
-```
-`mkimage` is available from the package `uboot-tools` (Alpine) or `u-boot-tools`
-(Ubuntu).
-
-To strip the header:
-```
-dd if=uImage bs=64 skip=1 of=Image
-```
-
-#### uImage
-
-`uImage` is a U-Boot image with the kernel and dtb (device tree binary) files.
-
-Use [extract-dtb](https://github.com/PabloCastellano/extract-dtb) after
-stripping the header.
-
-#### uRamdisk
-
-`uRamdisk` is a U-Boot Image with the RAMDisk.
-
-To see the content of `uRamdisk`:
-```
-dd if=uRamdisk bs=64 skip=1 of=ramdisk.gz
-gzip -d ramdisk.gz
-mount -o loop ramdisk <mount_point>
-```
-
-#### image.cfs
-
-```
-dd if=image.cfs of=image.sqsh skip=4 bs=512
-mount -t squashfs -o loop /mnt
-```
-
-The filesystem contains many different files and is mounted on `/usr/local/modules`.
-
-### Partition 4
-- ext4
-```
-├── .@database@
-│   └── mysql
-├── .systemfile
-│   ├── P2
-│   └── schedcfgs
-└── .wdphotos
-```
-
-### Partition 5
-- ext4
-- boot partition (rescue)
-```
-└── boot
-    ├── rescue_firmware
-    ├── rescue_fw_version.txt
-    ├── uImage
-    └── uRamdisk
-```
-
-### Partition 6
-- ext4
-- empty
-
-### Partition 7
-- ext4
-- configuration files
-- mounted on `/usr/local/config`
-
-
-### Big picture
+## Big picture
 
 1. Trial and error show that the bootloader looks for two files on partition 3
 (and then partition 5 if the first startup fails):
@@ -135,28 +31,60 @@ executes `/etc/rc.sh`,
 3. special filesystems are mounted and `scripts/system_init` from `image.cfs`
 is run.
 
+For more, see [partitions](partitions.md).
+
 
 ## Alpine Linux installation
 
 ### Configure the boot partition
 
-Instructions in **initrd/README.md**.
+1. Create an ext2 partition with number 3 (U-Boot looks in 3 and then 5)
+```
+Number  Start (sector)    End (sector)   Size      Code  Name
+   3            2048          264191   128.0 MiB   8300  Linux filesystem
+```
+
+```
+mke2fs -t ext2 -m 0 <device>
+```
+2. Generate `uImage` and `uRamdisk`
+Optionally edit the kernel configuration in `.config` and the `init` script for initramfs.
+```
+make
+```
+3. Copy the files to the folder `/boot`
+```
+mount /dev/sdb3 /mnt
+cp uImage /mnt/boot/
+cp uRamdisk /mnt/boot/
+umount /mnt
+```
+4. Boot the device
 
 ### Install the system
 
 Instructions in **root/README.md**.
 
 
+## Debugging tools
+
+- SATA to USB adapter (partition and write to the hard drive)
+- UART to USB adapter and soldering material for a U-Boot prompt
+
+
 ## Next steps
 
-- enable ntpd
 - lock the root account
 - configure the partition to save data
 - set up rsync
-- compile a more recent kernel and append dtb files
 
 
 ## Caveats
 
-- the led blinks (blue)
 - the hard drive does not automatically go to standby mode
+
+
+## Credits
+- [Fox's website](https://fox-exe.ru/WDMyCloud/WDMyCloud-Gen2/)
+- [Doozan forum](https://forum.doozan.com/read.php?2,32146)
+- [John-Q's wdmc-gen2 repository @GitHub (and its forks)](https://github.com/Johns-Q/wdmc-gen2)
