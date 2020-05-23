@@ -19,8 +19,8 @@
 MIRROR=http://dl-cdn.alpinelinux.org/alpine
 MOUNT_POINT=/mnt
 
-ALPINE_MAJ_V=3.10
-ALPINE_MIN_V=3.10.3
+ALPINE_MAJ_V=3.11
+ALPINE_MIN_V=3.11.6
 
 
 # Download a release of Alpine Linux (minirootfs flavor)
@@ -48,7 +48,7 @@ for initscript in devfs dmesg hwdrivers; do
     $DOCKER_CHROOT ln -sf /etc/init.d/$initscript /etc/runlevels/sysinit/$initscript
 done
 
-for initscript in bootmisc hostname hwclock modules networking swap sysctl syslog; do
+for initscript in bootmisc hostname networking ntpd swap sysctl syslog; do
     $DOCKER_CHROOT ln -sf /etc/init.d/$initscript /etc/runlevels/boot/$initscript
 done
 
