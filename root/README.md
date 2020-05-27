@@ -9,11 +9,6 @@ Number  Start (sector)    End (sector)  Size       Code  Name
    3            2048          264191   128.0 MiB   8300  Linux filesystem
 ```
 
-Or try first with a loopback device (the system takes ~30 MB).
-```
-dd if=/dev/zero of=root_loopback bs=1024 count=$((50*1024))
-```
-
 Format ext4 partition (no 64bit and no journal).
 ```
 sudo mke2fs -t ext4 -O ^64bit,^has_journal <device>
@@ -40,9 +35,13 @@ echo ':qemu-arm:M::\x7fELF\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x
 
 ## Set up the system
 
-- edit variables in `create-root.sh`
-- edit files in `root`
-- mount the partition [and change its owner to avoid running the script as root]
-- pull the latest alpine image
-- run the script
-- [change owner back to root]
+- edit files in **root/**
+- create a root password in **config/.root_pwd**
+- create the archive `rootfs.tar.gz` by running `make`
+- mount the system partition
+- extract the archive
+
+## `hd-idle`
+
+`hd-idle` is a small utility written by Christian Mueller to put the
+drive in standby mode after a period of inactivity.

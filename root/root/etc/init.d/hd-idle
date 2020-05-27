@@ -1,0 +1,9 @@
+#!/sbin/openrc-run
+
+description="Start hd-idle (utility to standby disk)"
+command="hd-idle"
+command_args="-d -a sda -i 300"
+command_background=true
+pidfile="/run/${RC_SVCNAME}.pid"
+#output_log="/var/log/hd-idle.log"
+error_log="/var/log/hd-idle.err"
