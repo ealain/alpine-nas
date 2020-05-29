@@ -21,7 +21,6 @@ rc-update add sysctl sysinit
 rc-update add syslog sysinit
 
 rc-update add agetty.console default
-rc-update add hd-idle default
 rc-update add sshd default
 
 rc-update add killprocs shutdown
