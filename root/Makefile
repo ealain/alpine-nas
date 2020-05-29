@@ -24,6 +24,7 @@ rootfs: minirootfs.tar \
 		ovl/etc/motd \
 		ovl/etc/network/interfaces \
 		ovl/etc/resolv.conf \
+		ovl/etc/sysctl.conf \
 		ovl/root/.ssh/authorized_keys \
 		ovl/usr/src/hd-idle.c
 	mkdir -p rootfs
