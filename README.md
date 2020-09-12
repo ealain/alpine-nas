@@ -36,6 +36,11 @@ For more, see [partitions](partitions.md).
 
 ## Alpine Linux installation
 
+### Dependencies
+
+- `mkimage` from [U-Boot](https://www.denx.de/wiki/U-Boot/WebHome) ([uboot-tools](https://www.archlinux.org/packages/community/x86_64/uboot-tools/))
+- `arm-none-eabi-gcc` from ARM ([gcc-arm-none-eabi-bin](https://aur.archlinux.org/packages/gcc-arm-none-eabi-bin/))
+
 ### Configure the boot partition
 
 1. Create an ext2 partition with number 3 (U-Boot looks in 3 and then 5)
@@ -47,8 +52,7 @@ Number  Start (sector)    End (sector)   Size      Code  Name
 ```
 mke2fs -t ext2 -m 0 <device>
 ```
-2. Generate `uImage` and `uRamdisk`
-Optionally edit the kernel configuration in `.config` and the `init` script for initramfs.
+2. Generate `uImage` and `uRamdisk` (optionally edit the kernel configuration in `config` and the `init` script for initramfs)
 ```
 make
 ```

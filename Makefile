@@ -28,14 +28,14 @@ zImage_and_dtb: linux-$(VERSION)/arch/arm/boot/zImage \
 	cat linux-$(VERSION)/arch/arm/boot/zImage linux-$(VERSION)/arch/arm/boot/dts/armada-375-wdmc-gen2.dtb > zImage_and_dtb
 
 linux-$(VERSION)/arch/arm/boot/dts/armada-375-wdmc-gen2.dtb: linux-$(VERSION)/arch/arm/boot/dts/armada-375-wdmc-gen2.dts
-	ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- $(MAKE) -C linux-$(VERSION) armada-375-wdmc-gen2.dtb
+	ARCH=arm CROSS_COMPILE=arm-none-eabi- $(MAKE) -C linux-$(VERSION) armada-375-wdmc-gen2.dtb
 
 linux-$(VERSION)/arch/arm/boot/dts/armada-375-wdmc-gen2.dts:
 	cp $(@F) $@
 
 linux-$(VERSION)/arch/arm/boot/zImage: linux-$(VERSION)/.config \
                                        linux-$(VERSION)/initramfs.cpio
-	ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- $(MAKE) -C linux-$(VERSION) -j 4 zImage
+	ARCH=arm CROSS_COMPILE=arm-none-eabi- $(MAKE) -C linux-$(VERSION) -j 4 zImage
 
 linux-$(VERSION)/.config: linux-$(VERSION).tar.xz config
 	tar -x -f linux-$(VERSION).tar.xz
