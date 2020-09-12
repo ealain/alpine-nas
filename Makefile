@@ -1,6 +1,6 @@
-VERSION=5.6.14
+VERSION=5.8.9
 BUSYBOX_URL=https://busybox.net/downloads/binaries/1.31.0-defconfig-multiarch-musl/busybox-armv7l
-MUSL_URL=http://dl-cdn.alpinelinux.org/alpine/v3.12/main/armhf/musl-1.1.24-r8.apk
+MUSL_URL=http://dl-cdn.alpinelinux.org/alpine/v3.12/main/armhf/musl-1.1.24-r9.apk
 KERNEL_URL=https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-$(VERSION).tar.xz
 
 .PHONY: all clean
