@@ -69,10 +69,10 @@ initramfs/proc:
 	mkdir -p $@
 
 busybox-armv7l:
-	wget $(BUSYBOX_URL)
+	curl $(BUSYBOX_URL) -o $@
 
 linux-$(VERSION).tar.xz:
-	wget $(KERNEL_URL)
+	curl $(KERNEL_URL) -o $@
 
 musl.apk:
-	wget $(MUSL_URL) -O musl.apk
+	curl $(MUSL_URL) -o $@
