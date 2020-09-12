@@ -5,7 +5,7 @@
 ## Device components
 
 Board reference: `WD_Glacier_DB-88F6720-V2`
-- Marvell Soc [Armada 375 (88F6720)](https://www.marvell.com/documents/xhvwfczzcqkjbmhbmvnb/)
+- Marvell SoC [Armada 375 (88F6720)](https://www.marvell.com/content/dam/marvell/en/public-collateral/embedded-processors/marvell-embedded-processors-armada-375-product-brief-2013-05.pdf)
 - Macronix flash memory: [MX25L8006E](https://www.macronix.com/Lists/Datasheet/Attachments/7578/MX25L8006E,%203V,%208Mb,%20v1.2.pdf)
 - Samsung DDR3 SDRAM: 1x 512 MB [K4B4G1646D-BCK0](https://www.samsung.com/semiconductor/global.semi/file/resource/2017/11/DS_K4B4G1646D-BC-I_Rev103-0.pdf)
 - Western Digital hard drive: [WD30EFRX](https://documents.westerndigital.com/content/dam/doc-library/en_us/assets/public/western-digital/product/internal-drives/wd-red-hdd/data-sheet-western-digital-wd-red-hdd-2879-800002.pdf).
